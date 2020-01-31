@@ -29,7 +29,16 @@
                             <outlet property="delegate" destination="oQH-hK-MVO" id="u7C-7h-Z40"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="ToDoLister" id="Weo-SN-jJ6"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="ToDoLister" id="Weo-SN-jJ6">
+                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="add" id="875-ii-q6A">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="oQH-hK-MVO" id="kJp-YA-5Vh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pPK-vx-U9q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
