@@ -7,18 +7,20 @@
 //
 
 import UIKit
-
+import CoreData
 class ToDoListViewController: UITableViewController {
     
-    var itemArray = [item]()
+    var itemArray = [Item]()
         
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
     
         super.viewDidLoad()
         
-        loadItems()
+     //   loadItems()
         // Do any additional setup after loading the view.
     }
 //MARK - TableView Datasource Methods
@@ -61,8 +63,10 @@ class ToDoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //What happens when User clicks on the add button
             
-            let newItem = item()
+            
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
+            newItem.done = false
             self.itemArray.append(newItem)
             
             self.saveItems()
@@ -77,28 +81,25 @@ class ToDoListViewController: UITableViewController {
     }
     
     func saveItems() {
-        let encoder = PropertyListEncoder()
-        
         do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
+            try context.save()
         } catch {
-            print("Error encoding")
+            print("Error Saving Context")
         }
         
         
         self.tableView.reloadData()
     }
     
-    func loadItems() {
-        let data = try? Data(contentsOf: dataFilePath!)
-        let decoder = PropertyListDecoder()
-        do {
-        itemArray = try decoder.decode([item].self, from: data!)
-        } catch {
-            print("Error Encoutered")
-        }
-    }
+//    func loadItems() {
+//        let data = try? Data(contentsOf: dataFilePath!)
+//        let decoder = PropertyListDecoder()
+//        do {
+//        itemArray = try decoder.decode([item].self, from: data!)
+//        } catch {
+//            print("Error Encoutered")
+//        }
+//    }
     
     
 }
