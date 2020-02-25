@@ -20,8 +20,13 @@ class ToDoListViewController: UITableViewController {
     
         super.viewDidLoad()
         
-     //   loadItems()
-        // Do any additional setup after loading the view.
+//        context.delete(itemArray[IndexPath.row])
+//        itemArray.remove(at: IndexPath.row)
+        
+       print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
+        loadItems()
+//         Do any additional setup after loading the view.
     }
 //MARK - TableView Datasource Methods
     
@@ -91,15 +96,16 @@ class ToDoListViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-//    func loadItems() {
-//        let data = try? Data(contentsOf: dataFilePath!)
-//        let decoder = PropertyListDecoder()
-//        do {
-//        itemArray = try decoder.decode([item].self, from: data!)
-//        } catch {
-//            print("Error Encoutered")
-//        }
-//    }
+    func loadItems() {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            itemArray = try context.fetch(request)
+        }
+        catch {
+            print("Error Fetching data from Context \(error)")
+        }
+            
+    }
     
     
 }
