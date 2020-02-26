@@ -20,12 +20,9 @@ class ToDoListViewController: UITableViewController {
     
         super.viewDidLoad()
         
-//        context.delete(itemArray[IndexPath.row])
-//        itemArray.remove(at: IndexPath.row)
-        
-       print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        loadItems()
+//          context.delete(itemArray[IndexPath.row])
+//          itemArray.remove(at: IndexPath.row)
+            loadItems()
 //         Do any additional setup after loading the view.
     }
 //MARK - TableView Datasource Methods
@@ -46,7 +43,7 @@ class ToDoListViewController: UITableViewController {
 
     
     
-//MARK - TableView Delegate Methods
+//MARK:- TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -57,7 +54,7 @@ class ToDoListViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-//MARK - Add new Items
+//MARK:- Add new Items
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
@@ -107,5 +104,30 @@ class ToDoListViewController: UITableViewController {
             
     }
     
-    
+}
+
+
+//MARK:- Search Bar Implementation
+
+extension ToDoListViewController : UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.predicate = predicate
+        
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        
+        request.sortDescriptors = [sortDescriptor]
+        
+        do {
+            itemArray = try context.fetch(request)
+        }
+        catch {
+            print("Error Fetching data from Context \(error)")
+        }
+        
+        tableView.reloadData()
+    }
 }
